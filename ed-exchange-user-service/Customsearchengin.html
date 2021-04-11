@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Custom Search JSON API Example</title>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script>
+      function hndlr(response) {
+      for (var i = 0; i < response.items.length; i++) {
+        var item = response.items[i];
+        // in production code, item.htmlTitle should have the HTML entities escaped.
+       // document.getElementById("content").innerHTML += "<br>" + item.htmlTitle + item.link;
+                   var a = document.createElement('a'); 
+                  
+                // Create the text node for anchor element.
+                var link = document.createTextNode(item.link);
+                  
+                // Append the text node to anchor element.
+                a.appendChild(link); 
+                  
+                // Set the title.s
+                a.title = item.link; 
+                  
+                // Set the href property.
+                a.href = item.link; 
+               document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
+              document.getElementById("content").appendChild(a)
+                // Append the anchor element to the body.
+                //document.body.appendChild(a); 
+      }
+    }
+    </script>
+    <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyCBPw1I6otxI7rwV6XWz5x-fdelUqPgpfE&cx=06ff160cd84c89407&q=cars&callback=hndlr">
+    </script>
+  </body>
+</html>
