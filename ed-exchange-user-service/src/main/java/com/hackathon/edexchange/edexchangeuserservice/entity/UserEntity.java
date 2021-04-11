@@ -2,15 +2,7 @@ package com.hackathon.edexchange.edexchangeuserservice.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,7 +46,8 @@ public class UserEntity {
 	@Column(name="followers")
 	private Long followers;
 
-	@Column(name="about")
+	@Lob
+	@Column(name="about", length = 30000)
 	private String about;
 
 	@Column(name="profile_image")
