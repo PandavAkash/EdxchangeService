@@ -47,7 +47,7 @@ public class UserEntity {
 	private Long followers;
 
 	@Lob
-	@Column(name="about", length = 30000)
+	@Column(name="about", length = 65000)
 	private String about;
 
 	@Column(name="profile_image")
