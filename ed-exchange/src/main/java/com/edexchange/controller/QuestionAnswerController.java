@@ -19,6 +19,7 @@ public class QuestionAnswerController {
     private QuestionAnswerService questionAnswerService;
 
     @PostMapping("/questions/post-que")
+    @CrossOrigin
     public ResponseEntity<String> addNewQuestion(@RequestBody Question question) {
 
         Question savedQuestion = questionAnswerService.addQuestion(question);
@@ -29,6 +30,7 @@ public class QuestionAnswerController {
     }
 
     @GetMapping("/questions/get/{id}")
+    @CrossOrigin
     public ResponseEntity<Question> getQuestion(@PathVariable("id") Integer id) {
 
         Question question = questionAnswerService.getQuestionById(id);
@@ -37,6 +39,7 @@ public class QuestionAnswerController {
     }
 
     @PostMapping("/questions/add-vote/{id}")
+    @CrossOrigin
     public ResponseEntity<String> addVoteToQuestion(@PathVariable("id") Integer id) {
             try {
                 questionAnswerService.addVoteToQuestion(id);
@@ -48,6 +51,7 @@ public class QuestionAnswerController {
     }
 
     @GetMapping("/questions/get-all")
+    @CrossOrigin
     public ResponseEntity<List<Question>> getAllQuestions() {
 
         List<Question> allQuestions = questionAnswerService.getAllQuestions();
