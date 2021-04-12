@@ -8,6 +8,7 @@ import java.util.List;
 public class Answer {
     @Id
     private Integer id;
+    @Lob
     private String answer;
     private Timestamp created_date;
 

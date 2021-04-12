@@ -11,6 +11,7 @@ public class Question {
     @GeneratedValue
     private Integer id;
     private String title;
+    @Lob
     private String description;
     private Timestamp created_date;
 
