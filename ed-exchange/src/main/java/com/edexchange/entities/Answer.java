@@ -13,7 +13,7 @@ public class Answer {
     private Timestamp created_date;
 
     @OneToOne
-    private User created_by;
+    private UserEntity created_by;
     private boolean isAccepted;
     private Integer vote;
 
@@ -47,11 +47,11 @@ public class Answer {
         this.created_date = created_date;
     }
 
-    public User getCreated_by() {
+    public UserEntity getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(User created_by) {
+    public void setCreated_by(UserEntity created_by) {
         this.created_by = created_by;
     }
 

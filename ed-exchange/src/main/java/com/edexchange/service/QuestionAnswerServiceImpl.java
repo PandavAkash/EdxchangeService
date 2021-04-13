@@ -2,7 +2,7 @@ package com.edexchange.service;
 
 import com.edexchange.entities.Answer;
 import com.edexchange.entities.Question;
-import com.edexchange.entities.User;
+import com.edexchange.entities.UserEntity;
 import com.edexchange.repo.AnswerRepo;
 import com.edexchange.repo.QuestionRepo;
 import com.edexchange.repo.UserRepo;
@@ -32,7 +32,8 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     public Question addQuestion(Question newQuestion) {
         System.out.println("Question: " + newQuestion);
         try {
-            Optional<User> user = userRepo.findById(newQuestion.getCreate_by().getId());
+           UserEntity userEntity =  newQuestion.getCreate_by();
+            Optional<UserEntity> user = userRepo.findById(userEntity.getUserId());
             System.out.println("user info: " + user.get());
             if (user.isPresent()) {
                 newQuestion.setCreate_by(user.get());

@@ -16,7 +16,7 @@ public class Question {
     private Timestamp created_date;
 
     @OneToOne
-    private User create_by;
+    private UserEntity create_by;
 
     @OneToMany(mappedBy = "questionId")
     private List<Answer> answers;
@@ -59,11 +59,11 @@ public class Question {
         this.created_date = created_date;
     }
 
-    public User getCreate_by() {
+    public UserEntity getCreate_by() {
         return create_by;
     }
 
-    public void setCreate_by(User create_by) {
+    public void setCreate_by(UserEntity create_by) {
         this.create_by = create_by;
     }
 
