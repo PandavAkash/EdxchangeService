@@ -1,5 +1,7 @@
 package com.edexchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 @Entity
 public class Answer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Lob
     private String answer;
@@ -17,8 +20,9 @@ public class Answer {
     private boolean isAccepted;
     private Integer vote;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "questionId")
+    @JsonIgnore
     private Question questionId;
 
     private String attachment;
