@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface QuestionAnswerService {
 
-    public Question addQuestion(Question newQuestion);
+    public Question addQuestion(Long userId, Question newQuestion);
 
     public Question getQuestionById(Integer queId);
 
@@ -20,13 +20,13 @@ public interface QuestionAnswerService {
     /*
 
      */
-    public void addAnswer(Answer newAns);
+    public Answer addAnswer(Integer queId, Long userId, Answer newAns);
 
-    public void getAnsById(Integer ansId);
+    public Answer getAnsById(Integer ansId);
 
     public void getAllAnsByQueId(Integer queId);
 
-    public void acceptAns(Answer answer);
+    public void acceptAns(Integer answer);
 
     public void addVoteToAns(Integer ansId);
 

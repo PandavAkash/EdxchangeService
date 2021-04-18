@@ -1,6 +1,7 @@
 package com.edexchange.controller;
 
 
+import com.edexchange.entities.Answer;
 import com.edexchange.entities.Question;
 import com.edexchange.service.QuestionAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,11 @@ public class QuestionAnswerController {
     @Autowired
     private QuestionAnswerService questionAnswerService;
 
-    @PostMapping("/questions/post-que")
-    public ResponseEntity<String> addNewQuestion(@RequestBody Question question) {
+    @PostMapping("/questions/post-que/{userId}")
+    public ResponseEntity<String> addNewQuestion(@RequestBody Question question,
+                                                 @PathVariable("userId") Long userId) {
 
-        Question savedQuestion = questionAnswerService.addQuestion(question);
+        Question savedQuestion = questionAnswerService.addQuestion(userId, question);
 
         return savedQuestion != null ? new ResponseEntity<String>(HttpStatus.CREATED) :
                 new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,19 +59,42 @@ public class QuestionAnswerController {
     }
 
 
-    @PostMapping("/answers/post-ans")
-    public void addNewAns() {
+    @PostMapping("/answers/post-ans/{queId}/{userId}")
+    public ResponseEntity<String> addNewAns(@PathVariable("queId")Integer queId,
+                                            @PathVariable("userId")Long userId,
+                                            @RequestBody Answer answer) {
+        Answer savedAnswer = questionAnswerService.addAnswer(queId, userId, answer);
 
+        return savedAnswer != null ? new ResponseEntity<String>(HttpStatus.CREATED) :
+                new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/answers/get-ans/{id}")
-    public void getAns() {
-
+    public ResponseEntity<Answer> getAns(@PathVariable("id")Integer ansId) {
+        Answer answer = questionAnswerService.getAnsById(ansId);
+        return new ResponseEntity<Answer>(answer, new HttpHeaders(),
+                answer!=null? HttpStatus.OK:HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/answers/add-vote")
-    public void addVoteToAns() {
+    @PostMapping("/answers/accept-ans/{id}")
+    public ResponseEntity<String> acceptAns(@PathVariable("id")Integer ansId) {
+        try {
+            questionAnswerService.acceptAns(ansId);
+            return new ResponseEntity<String>(HttpStatus.OK);
+        } catch (RuntimeException e) {
+           return  new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    @PostMapping("/answers/add-vote/{id}")
+    public ResponseEntity<String> addVoteToAns(@PathVariable("id")Integer ansId) {
+
+        try {
+            questionAnswerService.addVoteToAns(ansId);
+            return new ResponseEntity<String>(HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return  new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/answers/get-all")
@@ -77,3 +102,4 @@ public class QuestionAnswerController {
 
     }
 }
+ 

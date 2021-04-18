@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -29,18 +28,21 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     private UserRepo userRepo;
 
     @Override
-    public Question addQuestion(Question newQuestion) {
+    public Question addQuestion(Long userId, Question newQuestion) {
         System.out.println("Question: " + newQuestion);
         try {
-           UserEntity userEntity =  newQuestion.getCreate_by();
-            Optional<UserEntity> user = userRepo.findById(userEntity.getUserId());
-            System.out.println("user info: " + user.get());
-            if (user.isPresent()) {
-                newQuestion.setCreate_by(user.get());
+            if(Objects.nonNull(userId) && Objects.nonNull(newQuestion)){
+                UserEntity userEntity =  newQuestion.getCreate_by();
+                Optional<UserEntity> user = userRepo.findById(userId);
+                System.out.println("user info: " + user.get());
+                if (user.isPresent()) {
+                    newQuestion.setCreate_by(user.get());
+                }
+                newQuestion.setCreated_date(Timestamp.valueOf(LocalDateTime.now()));
+                newQuestion.setVote(0);
+                return questionRepo.save(newQuestion);
             }
-            newQuestion.setCreated_date(Timestamp.valueOf(LocalDateTime.now()));
-            newQuestion.setVote(0);
-            return questionRepo.save(newQuestion);
+
         } catch (RuntimeException re) {
             //Exception occured
             re.printStackTrace();
@@ -90,13 +92,34 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     }
 
     @Override
-    public void addAnswer(Answer newAns) {
+    public Answer addAnswer(Integer queId, Long userId, Answer newAns) {
 
+        if(Objects.nonNull(queId)&& Objects.nonNull(userId)){
+            Optional<Question> result = questionRepo.findById(queId);
+            Optional<UserEntity> userResult = userRepo.findById(userId);
+
+            if(result.isPresent()) {
+                newAns.setCreated_date(Timestamp.valueOf(LocalDateTime.now()));
+                newAns.setQuestionId(result.get());
+                newAns.setCreated_by(userResult.get());
+                newAns.setVote(0);
+                return answerRepo.save(newAns);
+            }
+        }
+        return null;
     }
 
     @Override
-    public void getAnsById(Integer ansId) {
+    public Answer getAnsById(Integer ansId) {
 
+        try{
+           Optional<Answer> result = answerRepo.findById(ansId);
+           if(result.isPresent()) result.get();
+        }catch (RuntimeException e){
+
+        }
+
+        return null;
     }
 
     @Override
@@ -105,13 +128,27 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     }
 
     @Override
-    public void acceptAns(Answer answer) {
-
+    public void acceptAns(Integer ansId) {
+        if(Objects.nonNull(ansId)){
+            Optional<Answer> result = answerRepo.findById(ansId);
+            if(result.isPresent()) {
+               Answer answer =  result.get();
+               answer.setAccepted(true);
+               answerRepo.save(answer);
+            }
+        }
     }
 
     @Override
     public void addVoteToAns(Integer ansId) {
-
+        if(Objects.nonNull(ansId)) {
+            Optional<Answer> result = answerRepo.findById(ansId);
+            if(result.isPresent()) {
+                Answer answer =  result.get();
+                answer.setVote(answer.getVote()+1);
+                answerRepo.save(answer);
+            }
+        }
     }
 
     @Override
