@@ -10,4 +10,5 @@ public class EdExchangeApplication {
 		SpringApplication.run(EdExchangeApplication.class, args);
 	}
 
+
 }

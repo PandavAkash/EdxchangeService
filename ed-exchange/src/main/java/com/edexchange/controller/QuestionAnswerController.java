@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin()
 public class QuestionAnswerController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class QuestionAnswerController {
                 allQuestions!=null ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
-
+    @CrossOrigin()
     @PostMapping("/answers/post-ans/{queId}/{userId}")
     public ResponseEntity<String> addNewAns(@PathVariable("queId")Integer queId,
                                             @PathVariable("userId")Long userId,
@@ -76,8 +76,8 @@ public class QuestionAnswerController {
                 answer!=null? HttpStatus.OK:HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/answers/accept-ans/{id}")
-    public ResponseEntity<String> acceptAns(@PathVariable("id")Integer ansId) {
+    @PostMapping("/answers/accept-ans/{qId}/{id}")
+    public ResponseEntity<String> acceptAns(@PathVariable("qId")Integer queId,@PathVariable("id")Integer ansId) {
         try {
             questionAnswerService.acceptAns(ansId);
             return new ResponseEntity<String>(HttpStatus.OK);
