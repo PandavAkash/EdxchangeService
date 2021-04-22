@@ -26,7 +26,7 @@ public interface QuestionAnswerService {
 
     public void getAllAnsByQueId(Integer queId);
 
-    public void acceptAns(Integer answer);
+    public void acceptAns(Integer queId, Integer ansId);
 
     public void addVoteToAns(Integer ansId);
 

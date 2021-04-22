@@ -79,7 +79,7 @@ public class QuestionAnswerController {
     @PostMapping("/answers/accept-ans/{qId}/{id}")
     public ResponseEntity<String> acceptAns(@PathVariable("qId")Integer queId,@PathVariable("id")Integer ansId) {
         try {
-            questionAnswerService.acceptAns(ansId);
+            questionAnswerService.acceptAns(queId, ansId);
             return new ResponseEntity<String>(HttpStatus.OK);
         } catch (RuntimeException e) {
            return  new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

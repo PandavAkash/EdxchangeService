@@ -71,6 +71,7 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
         if(result.isPresent()){
             Question question = result.get();
             question.setVote(question.getVote()+1);
+            questionRepo.save(question);
         }
     }
 
@@ -128,13 +129,21 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     }
 
     @Override
-    public void acceptAns(Integer ansId) {
+    public void acceptAns(Integer queId, Integer ansId) {
         if(Objects.nonNull(ansId)){
+
             Optional<Answer> result = answerRepo.findById(ansId);
             if(result.isPresent()) {
                Answer answer =  result.get();
                answer.setAccepted(true);
                answerRepo.save(answer);
+            }
+
+            Optional<Question> retrievedQuestionFromDb = questionRepo.findById(queId);
+            if(retrievedQuestionFromDb.isPresent()) {
+                Question question = retrievedQuestionFromDb.get();
+                question.setResolved(true);
+                questionRepo.save(question);
             }
         }
     }
