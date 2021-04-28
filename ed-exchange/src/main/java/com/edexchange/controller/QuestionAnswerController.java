@@ -86,8 +86,9 @@ public class QuestionAnswerController {
     public ResponseEntity<String> acceptAns(@PathVariable("qId")Integer queId,@PathVariable("id")Integer ansId) {
         try {
             questionAnswerService.acceptAns(queId, ansId);
+            emailSenderService.sendMail("User");
             return new ResponseEntity<String>(HttpStatus.OK);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
            return  new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
