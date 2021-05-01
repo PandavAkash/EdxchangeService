@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +26,12 @@ public class EmailSenderService {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @Value("${spring.mail.username}")
+    private String fromMailId;
+
+    @Value("${edexchange.receiver.mailid}")
+    private String toMailId;
 
     @Autowired
     private SpringTemplateEngine templateEngine;
@@ -58,12 +65,12 @@ public class EmailSenderService {
         log.info("START... Sending email");
 
         Mail mail = new Mail();
-        mail.setFrom("");//replace with your desired email
-        mail.setMailTo("");//replace with your desired email
+        mail.setFrom(fromMailId);//replace with your desired email
+        mail.setMailTo(toMailId);//replace with your desired email
         mail.setSubject("Appreciation from the EdExchange!!");
 
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("name", "Akash");
+        model.put("name", "User");
         model.put("location", "Pune");
         model.put("sign", "EDXCHANGE Team");
         mail.setProps(model);
